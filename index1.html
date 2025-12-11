@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hotel Billing System</title>
+
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    label { display: block; margin: 8px 0; }
+    button { margin-top: 12px; padding: 8px 12px; cursor: pointer;}
+    pre { background: #f0f0f0; padding: 12px; border-radius: 6px; }
+  </style>
+</head>
+
+<body>
+
+  <h2>Hotel Billing System</h2>
+
+  <label>
+    Room Type:
+    <select id="roomtype">
+      <option value="single">Single (Rs 1000/night)</option>
+      <option value="double">Double (Rs 2000/night)</option>
+      <option value="suite">Suite (Rs 5000/night)</option>
+    </select>
+  </label>
+
+  <label>
+    Nights:
+    <input id="nights" type="number" min="1" value="1">
+  </label>
+
+  <h3>Additional Services</h3>
+
+  <label><input type="checkbox" id="breakfast"> Breakfast (Rs 200/day)</label>
+  <label><input type="checkbox" id="lunch"> Lunch (Rs 300/day)</label>
+  <label><input type="checkbox" id="dinner"> Dinner (Rs 400/day)</label>
+  <label><input type="checkbox" id="laundry"> Laundry (Rs 150/day)</label>
+  <label><input type="checkbox" id="airport"> Airport Pickup (Rs 1000 one-time)</label>
+
+  <button id="calculate">Calculate Bill</button>
+
+  <h3>Invoice</h3>
+  <pre id="invoice"></pre>
+
+  <script>
+    document.getElementById("calculate").addEventListener("click", function() {
+
+      const roomPrices = { single: 1000, double: 2000, suite: 5000 };
+      const nights = Number(document.getElementById("nights").value);
+      const roomType = document.getElementById("roomtype").value;
+
+      if (nights < 1) {
+        document.getElementById("invoice").textContent = "Please enter valid number of nights.";
+        return;
+      }
+
+      let total = roomPrices[roomType] * nights;
+
+      let invoice = [];
+      invoice.push("------ HOTEL INVOICE ------");
+      invoice.push(`Room: ${roomType} — Rs ${roomPrices[roomType]} x ${nights} nights = Rs ${roomPrices[roomType] * nights}`);
+
+      // Breakfast
+      if (document.getElementById("breakfast").checked) {
+        let cost = 200 * nights;
+        total += cost;
+        invoice.push(`Breakfast: Rs 200 x ${nights} = Rs ${cost}`);
+      }
+
+      // Lunch
+      if (document.getElementById("lunch").checked) {
+        let cost = 300 * nights;
+        total += cost;
+        invoice.push(`Lunch: Rs 300 x ${nights} = Rs ${cost}`);
+      }
+
+      // Dinner
+      if (document.getElementById("dinner").checked) {
+        let cost = 400 * nights;
+        total += cost;
+        invoice.push(`Dinner: Rs 400 x ${nights} = Rs ${cost}`);
+      }
+
+      // Laundry
+      if (document.getElementById("laundry").checked) {
+        let cost = 150 * nights;
+        total += cost;
+        invoice.push(`Laundry: Rs 150 x ${nights} = Rs ${cost}`);
+      }
+
+      // Airport pickup
+      if (document.getElementById("airport").checked) {
+        total += 1000;
+        invoice.push(`Airport Pickup: Rs 1000`);
+      }
+
+      invoice.push("---------------------------");
+      invoice.push(`TOTAL BILL: Rs ${total}`);
+
+      document.getElementById("invoice").textContent = invoice.join("\n");
+    });
+  </script>
+
+</body>
+</html>
+
+
+
+</body>
+</html>
